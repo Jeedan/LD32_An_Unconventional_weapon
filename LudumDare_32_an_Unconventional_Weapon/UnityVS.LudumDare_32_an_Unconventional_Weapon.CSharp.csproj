@@ -56,7 +56,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\EnterDungeonOnTriggerEnter.cs" />
+    <Compile Include="Assets\PlayerWeapon.cs" />
     <Compile Include="Assets\_Scripts\DestroyOnTriggerEnter.cs" />
+    <Compile Include="Assets\_Scripts\DisplayTextOnTriggerEnter.cs" />
     <Compile Include="Assets\_Scripts\EnemyAI.cs" />
     <Compile Include="Assets\_Scripts\PlayerController.cs" />
     <Compile Include="Assets\_Scripts\SmoothFollowCamera.cs" />
@@ -64,6 +67,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\_Models\Not mine\Danimal Credit.txt" />
+    <None Include="Assets\_Models\dungeon stairs\Credit Clint Bellanger.txt" />
+    <None Include="Assets\__Credit\Dungeon stairs Credit Clint Bellanger.txt" />
+    <None Include="Assets\__Credit\Pixel art set Danimal Credit.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>

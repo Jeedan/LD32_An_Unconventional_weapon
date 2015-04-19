@@ -9,6 +9,17 @@ public class UIManager : MonoBehaviour
     public Text playerHealthText;
     public Text playerStaminaText;
 
+    #region Dialog
+
+    public GameObject DialogBox;
+    public Text npcConvoText;
+    public float letterDelay = 0.3f;
+
+    private bool showText = false;
+    private bool isShowing = false;
+    public string[] npcText = { "HELLO INTERN", "GO CLEAN THE CELLAR?", "What are you waiting for?" };
+    public GameObject npcTrigger;
+    #endregion
 
     public void Awake()
     {
@@ -46,4 +57,76 @@ public class UIManager : MonoBehaviour
         string playerStamina = "Stamina: " + stamina.ToString("0");
         playerStaminaText.text = playerStamina;
     }
+
+    public void displayNPCDialogue()
+    {
+        DialogBox.SetActive(true);
+        StartCoroutine(ScrollingText());
+    }
+
+    public void hideNPCDialogue()
+    {
+
+        if (isShowing) return;
+        DialogBox.SetActive(false);
+    }
+
+    public void playerIsCloseEnough(bool displayText, GameObject trigger)
+    {
+        showText = displayText;
+
+        if (showText)
+        {
+            npcTrigger = trigger;
+            npcTrigger.SetActive(false);
+            npcConvoText.text = "";
+            displayNPCDialogue();
+        }
+        else
+        {
+            npcConvoText.text = "";
+            hideNPCDialogue();
+        }
+    }
+
+    IEnumerator ScrollingText()
+    {
+        npcConvoText.text = "";
+        bool doneDisplaying = false;
+        var lineIndex = 0;
+        foreach (string word in npcText)
+        {
+            foreach (var letter in word.ToCharArray())
+            {
+                npcConvoText.text += letter;
+                yield return new WaitForSeconds(letterDelay);
+                if (npcConvoText.text == npcText[lineIndex])
+                {
+                    bool wordDone = true;
+                    lineIndex++;
+                    if (wordDone && lineIndex < npcText.Length)
+                    {
+                        npcConvoText.text = "";
+                        yield return new WaitForSeconds(letterDelay);
+
+                        wordDone = false;
+
+                    }
+                }
+            }
+        }
+
+
+        doneDisplaying = true;
+        yield return new WaitForSeconds(2);
+        string[] repeatThisText = { "What are you waiting for?" };
+        npcText = repeatThisText;
+        Debug.Log("finished displaying");
+        isShowing = !doneDisplaying;
+
+        npcTrigger.SetActive(true);
+        hideNPCDialogue();
+    }
+
+
 }

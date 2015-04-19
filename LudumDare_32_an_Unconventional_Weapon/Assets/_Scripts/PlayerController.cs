@@ -126,22 +126,13 @@ public class PlayerController : MonoBehaviour
                 rig.MoveRotation(targetLookRotation);
             }
         }
-
-        //if (_direction != Vector3.zero)
-        //{
-        //    Vector3 facing = _direction;
-
-        //    Quaternion targetLookRotation = Quaternion.LookRotation(facing);
-
-        //    rig.MoveRotation(targetLookRotation);
-        //}
     }
 
     void Attack()
     {
         // Todo take this out and make it a class
         // todo create "AbilityInfo" class for stats
-        if (Input.GetMouseButtonDown(1) && canInput)
+        if (Input.GetMouseButtonDown(0) && canInput)
         {
             float attackStaminaCost = 10.0f;
             if ((stamina > 0.0f && stamina >= attackStaminaCost) && Time.time > attackRate + attackCoolDownTimer)
