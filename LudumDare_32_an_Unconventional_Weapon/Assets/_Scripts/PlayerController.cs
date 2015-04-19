@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
     public bool attacking = false;
 
-    // TODO MOVE THIS TO ITS OWN CLASS
+    // TODO Create Health component
     public float health = 100.0f;
     private float maxhealth;
     public float stamina = 100.0f;
@@ -32,11 +32,15 @@ public class PlayerController : MonoBehaviour
 
     private UIManager uiManager;
 
+    private PlayerWeapon weaponScript;
+
     // Use this for initialization
     void Start()
     {
         anim = transform.FindChild("_PlayerModel").GetComponent<Animator>();
         rig = GetComponent<Rigidbody>();
+
+        weaponScript = GetComponent<PlayerWeapon>();
 
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         uiManager.setPlayerHealth(health);
@@ -151,12 +155,31 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Lock movement during attack animation
+    /// when the attack animation is 60% complete
+    /// we activate the hitbox
+    /// we activate the hitbox for 10% of the duration
+    /// then we disable it and wait another 10%
+    /// then unlock movement
+    /// </summary>
+    /// <param name="t"></param>
+    /// <returns></returns>
     IEnumerator LockMovement(float t)
     {
+        float animDelay = t * 0.6f;
+        float hitboxActiveTime = t * 0.2f;
+        Debug.Log("anim delay " + animDelay + " hitbox active: " + hitboxActiveTime);
         canMove = false;
         // animate the attack
         AnimateAttack();
-        yield return new WaitForSeconds(t);
+        yield return new WaitForSeconds(animDelay);
+
+        weaponScript.toggleWeaponHitbox(true);
+        yield return new WaitForSeconds(hitboxActiveTime);
+        weaponScript.toggleWeaponHitbox(false);
+        yield return new WaitForSeconds(hitboxActiveTime);
+
         canMove = true;
         attacking = false;
     }

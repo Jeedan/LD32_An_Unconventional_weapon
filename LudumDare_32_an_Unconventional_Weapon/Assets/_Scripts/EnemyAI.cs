@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour
     private Vector3 movement;
     public float speed = 5.0f;
     public float attackRange = 3.5f;
+    public float ignoreRange = 10.0f;
 
     // Use this for initialization
     void Start()
@@ -24,7 +25,7 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoveToTarget();
+        //MoveToTarget();
     }
 
     private void MoveToTarget()
@@ -32,8 +33,8 @@ public class EnemyAI : MonoBehaviour
         Vector3 direction = target.transform.position - transform.position;
         Vector3 dirNormalized = direction.normalized;
         float distance = direction.magnitude;
-
-        if (distance > attackRange)
+        if (distance > ignoreRange) return;
+        if (distance < ignoreRange && distance > attackRange )
         {
             RotateToTarget(dirNormalized);
             movement = dirNormalized * speed * Time.deltaTime;

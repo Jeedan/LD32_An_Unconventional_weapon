@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\EnterDungeonOnTriggerEnter.cs" />
      <Compile Include="Assets\PlayerWeapon.cs" />
+     <Compile Include="Assets\SpawnEnemies.cs" />
      <Compile Include="Assets\_Scripts\DestroyOnTriggerEnter.cs" />
      <Compile Include="Assets\_Scripts\DisplayTextOnTriggerEnter.cs" />
      <Compile Include="Assets\_Scripts\EnemyAI.cs" />

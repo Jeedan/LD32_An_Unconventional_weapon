@@ -3,18 +3,28 @@ using System.Collections;
 
 public class EnterDungeonOnTriggerEnter : MonoBehaviour
 {
-    public void OnTriggerEnter(Collider other)
+
+    public GameObject player;
+    public Transform spawn;
+
+
+    public GameObject baseEnvironment;
+
+    void Start()
     {
-        // TODO
-        // Set player position to the dungeon position
-        // dungeon position will be somewhere like 1000 units to the right or something
-
-
+        spawn = GameObject.Find("Dungeon_Player_Spawn").transform;
+        baseEnvironment = GameObject.Find("Base_Level");
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnTriggerEnter(Collider other)
     {
-
+        // TODO Screen Fade
+        // dungeon position will be somewhere like 1000 units to the right or something
+        player.transform.position = spawn.position;
+        Camera.main.transform.position = new Vector3(spawn.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z);
+        Camera.main.GetComponent<SmoothFollowCamera>().enabled = true;
+        // deactivate base
+        baseEnvironment.SetActive(false);
     }
 }
