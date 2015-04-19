@@ -56,14 +56,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\EnterDungeonOnTriggerEnter.cs" />
-    <Compile Include="Assets\PlayerWeapon.cs" />
-    <Compile Include="Assets\SpawnEnemies.cs" />
+    <Compile Include="Assets\PickUpWeapon.cs" />
     <Compile Include="Assets\_Scripts\DestroyOnTriggerEnter.cs" />
     <Compile Include="Assets\_Scripts\DisplayTextOnTriggerEnter.cs" />
     <Compile Include="Assets\_Scripts\EnemyAI.cs" />
+    <Compile Include="Assets\_Scripts\EnemyHealth.cs" />
+    <Compile Include="Assets\_Scripts\EnterDungeonOnTriggerEnter.cs" />
+    <Compile Include="Assets\_Scripts\GameManager.cs" />
     <Compile Include="Assets\_Scripts\PlayerController.cs" />
+    <Compile Include="Assets\_Scripts\PlayerWeapon.cs" />
+    <Compile Include="Assets\_Scripts\Resource.cs" />
     <Compile Include="Assets\_Scripts\SmoothFollowCamera.cs" />
+    <Compile Include="Assets\_Scripts\SpawnEnemies.cs" />
     <Compile Include="Assets\_Scripts\UIManager.cs" />
   </ItemGroup>
   <ItemGroup>

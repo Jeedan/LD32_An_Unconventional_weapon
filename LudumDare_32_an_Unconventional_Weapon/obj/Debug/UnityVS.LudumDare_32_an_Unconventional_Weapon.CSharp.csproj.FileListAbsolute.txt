@@ -9,3 +9,14 @@ G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon
 G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\obj\Debug\Assembly-CSharp.dll
 G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\obj\Debug\Assembly-CSharp.pdb
 G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\Temp\UnityVS_bin\Debug\UnityEngine.xml
+G:\Github\Unity Projects\LudumDare_32\LudumDare_32_an_Unconventional_Weapon\Temp\UnityVS_bin\Debug\Assembly-CSharp.dll
+G:\Github\Unity Projects\LudumDare_32\LudumDare_32_an_Unconventional_Weapon\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb
+G:\Github\Unity Projects\LudumDare_32\LudumDare_32_an_Unconventional_Weapon\Temp\UnityVS_bin\Debug\UnityEditor.dll
+G:\Github\Unity Projects\LudumDare_32\LudumDare_32_an_Unconventional_Weapon\Temp\UnityVS_bin\Debug\UnityEngine.dll
+G:\Github\Unity Projects\LudumDare_32\LudumDare_32_an_Unconventional_Weapon\Temp\UnityVS_bin\Debug\UnityEngine.UI.dll
+G:\Github\Unity Projects\LudumDare_32\LudumDare_32_an_Unconventional_Weapon\Temp\UnityVS_bin\Debug\UnityEngine.xml
+G:\Github\Unity Projects\LudumDare_32\LudumDare_32_an_Unconventional_Weapon\Temp\UnityVS_bin\Debug\UnityEditor.xml
+G:\Github\Unity Projects\LudumDare_32\LudumDare_32_an_Unconventional_Weapon\Temp\UnityVS_bin\Debug\UnityEngine.UI.xml
+G:\Github\Unity Projects\LudumDare_32\LudumDare_32_an_Unconventional_Weapon\obj\Debug\UnityVS.LudumDare_32_an_Unconventional_Weapon.CSharp.csprojResolveAssemblyReference.cache
+G:\Github\Unity Projects\LudumDare_32\LudumDare_32_an_Unconventional_Weapon\obj\Debug\Assembly-CSharp.dll
+G:\Github\Unity Projects\LudumDare_32\LudumDare_32_an_Unconventional_Weapon\obj\Debug\Assembly-CSharp.pdb

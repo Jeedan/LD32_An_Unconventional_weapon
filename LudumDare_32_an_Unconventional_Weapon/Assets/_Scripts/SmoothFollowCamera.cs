@@ -10,6 +10,7 @@ public class SmoothFollowCamera : MonoBehaviour
 
     private Vector3 targetOffset = Vector3.zero;
 
+    public bool smoothFollow = true;
     void Start()
     {
         if (target)
@@ -19,10 +20,16 @@ public class SmoothFollowCamera : MonoBehaviour
         }
     }
 
+    public void ResetPosition(Vector3 pos)
+    {
+        targetOffset = transform.position - target.position;
+        transform.position = targetOffset;
+    }
+
     // Update is called once per frame
     void LateUpdate()
     {
-        if (target)
+        if (target && smoothFollow)
         {
             Vector3 desiredPos = (target.position + targetOffset);
 

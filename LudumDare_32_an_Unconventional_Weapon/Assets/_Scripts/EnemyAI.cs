@@ -1,19 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+[RequireComponent(typeof(EnemyHealth))]
 public class EnemyAI : MonoBehaviour
 {
+
+    private PlayerController playerScript;
+    private Rigidbody rig;
+    private Vector3 movement;
     public GameObject target;
 
-    public PlayerController playerScript;
-
-    private Rigidbody rig;
-
-    private Vector3 movement;
     public float speed = 5.0f;
-    public float attackRange = 3.5f;
     public float ignoreRange = 10.0f;
 
+    #region attack values
+    public float attackRange = 3.5f;
+    public float damage = 2.0f;
+    public float attackRate = 1.2f;
+    private float attackTimer = -1.0f;
+    #endregion
+
+    public LayerMask playerLayer;
     // Use this for initialization
     void Start()
     {
@@ -23,9 +29,12 @@ public class EnemyAI : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        //MoveToTarget();
+        if (target)
+        {
+            MoveToTarget();
+        }
     }
 
     private void MoveToTarget()
@@ -34,7 +43,7 @@ public class EnemyAI : MonoBehaviour
         Vector3 dirNormalized = direction.normalized;
         float distance = direction.magnitude;
         if (distance > ignoreRange) return;
-        if (distance < ignoreRange && distance > attackRange )
+        if (distance < ignoreRange && distance > attackRange)
         {
             RotateToTarget(dirNormalized);
             movement = dirNormalized * speed * Time.deltaTime;
@@ -43,7 +52,29 @@ public class EnemyAI : MonoBehaviour
         else if (distance <= attackRange)
         {
             movement = Vector3.zero;
+            rig.velocity = movement;
             RotateToTarget(dirNormalized);
+            AttackPlayer(dirNormalized);
+        }
+    }
+
+
+    private void AttackPlayer(Vector3 direction)
+    {
+        if (Time.time > attackRate + attackTimer)
+        {
+            Ray ray = new Ray(transform.position, direction);
+            RaycastHit hitInfo;
+            if (Physics.Raycast(ray, out hitInfo, 5, playerLayer))
+            {
+                if (hitInfo.transform.gameObject == target)
+                {
+                    Debug.Log("attacking the player");
+                    // TODO play attack animation
+                    playerScript.TakeDamage(damage);
+                    attackTimer = Time.time;
+                }
+            }
         }
     }
 

@@ -15,6 +15,7 @@ public class EnterDungeonOnTriggerEnter : MonoBehaviour
         spawn = GameObject.Find("Dungeon_Player_Spawn").transform;
         baseEnvironment = GameObject.Find("Base_Level");
         player = GameObject.FindGameObjectWithTag("Player");
+
     }
 
     public void OnTriggerEnter(Collider other)
@@ -25,6 +26,7 @@ public class EnterDungeonOnTriggerEnter : MonoBehaviour
         Camera.main.transform.position = new Vector3(spawn.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z);
         Camera.main.GetComponent<SmoothFollowCamera>().enabled = true;
         // deactivate base
+        UIManager.instance.hideNPCDialogue();
         baseEnvironment.SetActive(false);
     }
 }

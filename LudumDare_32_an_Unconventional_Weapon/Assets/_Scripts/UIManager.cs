@@ -10,7 +10,6 @@ public class UIManager : MonoBehaviour
     public Text playerStaminaText;
 
     #region Dialog
-
     public GameObject DialogBox;
     public Text npcConvoText;
     public float letterDelay = 0.3f;
@@ -21,6 +20,10 @@ public class UIManager : MonoBehaviour
     public GameObject npcTrigger;
     #endregion
 
+    #region Death Animation
+    public GameObject DeathDisplay;
+    public Animator deathAnimator;
+    #endregion
     public void Awake()
     {
         if (instance != null && instance != this)
@@ -37,13 +40,23 @@ public class UIManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        deathAnimator = DeathDisplay.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    public void playDeathAnimation()
+    {
+        deathAnimator.SetBool("Alive", false);
+    }
+
+    public void playAliveAnimation()
+    {
+        deathAnimator.SetBool("Alive", true);
     }
 
     public void setPlayerHealth(float hp)
@@ -106,9 +119,9 @@ public class UIManager : MonoBehaviour
                     lineIndex++;
                     if (wordDone && lineIndex < npcText.Length)
                     {
-                        npcConvoText.text = "";
-                        yield return new WaitForSeconds(letterDelay);
+                        yield return new WaitForSeconds(1.0f);
 
+                        npcConvoText.text = "";
                         wordDone = false;
 
                     }
@@ -119,7 +132,7 @@ public class UIManager : MonoBehaviour
 
         doneDisplaying = true;
         yield return new WaitForSeconds(2);
-        string[] repeatThisText = { "What are you waiting for?" };
+        string[] repeatThisText = { npcText[npcText.Length-1] };
         npcText = repeatThisText;
         Debug.Log("finished displaying");
         isShowing = !doneDisplaying;

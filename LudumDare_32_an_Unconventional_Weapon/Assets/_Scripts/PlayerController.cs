@@ -4,35 +4,40 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-    public LayerMask walkableLayerMask;
-    public float strafeSpeed = 5.0f;
-    public float forwardSpeed = 10.0f;
+
+    private UIManager uiManager;
+    private PlayerWeapon weaponScript;
 
     private Rigidbody rig;
     private Animator anim;
     private Vector3 movement;
 
+    private bool attacking = false;
+    private bool canMove = true;
+    private bool canInput = true;
 
+    private float strafe;
+    private float forward; 
+
+    public LayerMask walkableLayerMask;
+    public float strafeSpeed = 5.0f;
+    public float forwardSpeed = 10.0f;
+
+#region attack timers
+    // TODO move damage to weapon
+    public float damage = 2.0f;
     public float attackRate = 2.0f;
-    [SerializeField]
     private float attackCoolDownTimer = 0.0f;
+#endregion
 
-    public bool canMove = true;
-    public bool canInput = true;
+    public Resource healthScript;
+    public Resource staminaScript;
 
-    public bool attacking = false;
-
-    // TODO Create Health component
-    public float health = 100.0f;
-    private float maxhealth;
-    public float stamina = 100.0f;
-    [SerializeField]
-    private float maxStamina;
+    #region regeneration
     public float staminaRegen = 1.0f;
-
-    private UIManager uiManager;
-
-    private PlayerWeapon weaponScript;
+    public float regenDelay = 1.0f;
+    private float regenTimer = -2.0f;
+    #endregion
 
     // Use this for initialization
     void Start()
@@ -42,42 +47,77 @@ public class PlayerController : MonoBehaviour
 
         weaponScript = GetComponent<PlayerWeapon>();
 
+        healthScript.MaxResource = healthScript.currentResource;
+        staminaScript.MaxResource = staminaScript.currentResource;
+
+        // HUD related stuff
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
-        uiManager.setPlayerHealth(health);
-        uiManager.setPlayerStamina(stamina);
-        maxStamina = stamina;
-        maxhealth = health;
+        uiManager.setPlayerHealth(healthScript.currentResource);
+        uiManager.setPlayerStamina(staminaScript.currentResource);
+    }
+
+   public void ResetValues()
+    {
+        healthScript.currentResource = healthScript.MaxResource;
+        staminaScript.currentResource = healthScript.MaxResource;
+        uiManager.setPlayerHealth(healthScript.currentResource);
+        uiManager.setPlayerStamina(staminaScript.currentResource);
     }
 
     void Update()
     {
+        if (canInput)
+        {
+            strafe = Input.GetAxisRaw("Horizontal"); // side to side movement
+            forward = Input.GetAxisRaw("Vertical"); // forward movement
+        }
         Attack();
     }
 
-    public float regenDelay = 1.0f;
-    public float regenTimer = -2.0f;
-
-    // Update is called once per frame
     void FixedUpdate()
     {
-
         if (canInput)
         {
-            float strafe = Input.GetAxisRaw("Horizontal"); // side to side movement
-            float forward = Input.GetAxisRaw("Vertical"); // forward movement
-
             Move(strafe, forward);
             AnimateMovement(strafe, forward);
             Turn(movement);
         }
+        // when not attacking start regenerating stamina again
+        RegenStamina();
+    }
 
-        if (!attacking && stamina < maxStamina && Time.time > regenDelay + regenTimer)
+    void CheckIfPlayerIsDead()
+    {
+        if (healthScript.isDead())
         {
-            stamina += staminaRegen;
-            uiManager.setPlayerStamina(stamina);
-            if (stamina > maxStamina)
+            uiManager.playDeathAnimation();
+            gameObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            uiManager.playAliveAnimation();
+        }
+    }
+
+    public void TakeDamage(float amount)
+    {
+        healthScript.currentResource = healthScript.SubtractResource(healthScript.currentResource, amount);
+
+        uiManager.setPlayerHealth(healthScript.currentResource);
+        CheckIfPlayerIsDead();
+    }
+
+    void RegenStamina()
+    {
+
+        if (!attacking && staminaScript.currentResource < staminaScript.MaxResource && Time.time > regenDelay + regenTimer)
+        {
+            staminaScript.currentResource += staminaRegen;
+            uiManager.setPlayerStamina(staminaScript.currentResource);
+            if (staminaScript.currentResource > staminaScript.MaxResource)
             {
-                stamina = maxStamina;
+                staminaScript.currentResource = staminaScript.MaxResource;
             }
             regenTimer = Time.time;
         }
@@ -138,16 +178,17 @@ public class PlayerController : MonoBehaviour
         // todo create "AbilityInfo" class for stats
         if (Input.GetMouseButtonDown(0) && canInput)
         {
+            if (!weaponScript.currentWeapon) return;
             float attackStaminaCost = 10.0f;
-            if ((stamina > 0.0f && stamina >= attackStaminaCost) && Time.time > attackRate + attackCoolDownTimer)
+            if ((staminaScript.currentResource > 0.0f && staminaScript.currentResource >= attackStaminaCost) && Time.time > attackRate + attackCoolDownTimer)
             {
                 attacking = true;
                 StopMoving();
-
+                LockInput();
                 StartCoroutine(LockMovement(attackRate));
                 // subtract "stamina" from player
-                stamina = SubtractResource(stamina, 10);
-                uiManager.setPlayerStamina(stamina);
+                staminaScript.currentResource = SubtractResource(staminaScript.currentResource, 10);
+                uiManager.setPlayerStamina(staminaScript.currentResource);
 
                 // deal damage
                 attackCoolDownTimer = Time.time;
@@ -169,7 +210,6 @@ public class PlayerController : MonoBehaviour
     {
         float animDelay = t * 0.6f;
         float hitboxActiveTime = t * 0.2f;
-        Debug.Log("anim delay " + animDelay + " hitbox active: " + hitboxActiveTime);
         canMove = false;
         // animate the attack
         AnimateAttack();
@@ -179,7 +219,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(hitboxActiveTime);
         weaponScript.toggleWeaponHitbox(false);
         yield return new WaitForSeconds(hitboxActiveTime);
-
+        FreeInput();
         canMove = true;
         attacking = false;
     }
@@ -212,22 +252,6 @@ public class PlayerController : MonoBehaviour
         canInput = true;
     }
 
-    public bool isDead()
-    {
-        if (health > 0.0f)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    public void ResetHealth()
-    {
-        health = maxhealth;
-    }
 
     public float SubtractResource(float value, float amount)
     {
@@ -241,25 +265,25 @@ public class PlayerController : MonoBehaviour
         return (result);
     }
 
-//    public void KnockBack(Vector3 direction)
-//    {
-//        Vector3 startPos = transform.position;
-//        Vector3 endPos;
+    //    public void KnockBack(Vector3 direction)
+    //    {
+    //        Vector3 startPos = transform.position;
+    //        Vector3 endPos;
 
-//        LockInput();
-//        StopMoving();
-//        // movement = new Vector3(inputX, 0.0f, inputZ );
-//        movement = direction.normalized;
+    //        LockInput();
+    //        StopMoving();
+    //        // movement = new Vector3(inputX, 0.0f, inputZ );
+    //        movement = direction.normalized;
 
-//        float speedZ = 500.0f * Time.deltaTime;
+    //        float speedZ = 500.0f * Time.deltaTime;
 
-//        movement.z *= speedZ;
+    //        movement.z *= speedZ;
 
-//        endPos = transform.position + movement;
-//        rig.MovePosition(transform.position + movement);
-        
-////        rig.MovePosition(Vector3.Lerp(startPos, endPos, Vector3.Distance(transform.position, movement) / movement.magnitude));
-//        StartCoroutine(FreeInput(0.2f));
+    //        endPos = transform.position + movement;
+    //        rig.MovePosition(transform.position + movement);
 
-//    }
+    ////        rig.MovePosition(Vector3.Lerp(startPos, endPos, Vector3.Distance(transform.position, movement) / movement.magnitude));
+    //        StartCoroutine(FreeInput(0.2f));
+
+    //    }
 }

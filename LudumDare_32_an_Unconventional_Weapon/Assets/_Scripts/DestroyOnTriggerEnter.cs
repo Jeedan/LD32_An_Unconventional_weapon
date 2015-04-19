@@ -6,8 +6,15 @@ public class DestroyOnTriggerEnter : MonoBehaviour
     public string[] killTags;
     public BoxCollider hitBox;
 
+    private PlayerController playerScript;
+
+    private float damage;
+
     public void Start()
     {
+        playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+
+        damage = playerScript.damage;
         hitBox = GetComponent<BoxCollider>();
         hitBox.enabled = false;
     }
@@ -27,7 +34,7 @@ public class DestroyOnTriggerEnter : MonoBehaviour
                 // add score
                 // drop item?
                 // drop health
-                Destroy(other.gameObject);
+                other.GetComponent<EnemyHealth>().TakeDamage(damage);
             }
         }
     }
