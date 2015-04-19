@@ -1,0 +1,184 @@
+fileFormatVersion: 2
+guid: 4cc02a72cf7adb446a73f69171d4d409
+timeCreated: 1429431813
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Arch1
+    100002: Arch2
+    100004: Bars1
+    100006: Bars2
+    100008: BrickTrim
+    100010: BrickTrim2
+    100012: BrickTrim3
+    100014: BrickTrim4
+    100016: BrickTrim5
+    100018: Circle
+    100020: FloorTrim
+    100022: IKFootLeft
+    100024: IKFootRight
+    100026: Pillar1
+    100028: Pillar2
+    100030: ShadowPlane
+    100032: //RootNode
+    100034: StairsDownMask
+    100036: Steps
+    100038: StepsDown
+    100040: Wall
+    100042: WallChains
+    100044: WallChains_002
+    100046: WallsDown
+    400000: Arch1
+    400002: Arch2
+    400004: Bars1
+    400006: Bars2
+    400008: BrickTrim
+    400010: BrickTrim2
+    400012: BrickTrim3
+    400014: BrickTrim4
+    400016: BrickTrim5
+    400018: Circle
+    400020: FloorTrim
+    400022: IKFootLeft
+    400024: IKFootRight
+    400026: Pillar1
+    400028: Pillar2
+    400030: ShadowPlane
+    400032: //RootNode
+    400034: StairsDownMask
+    400036: Steps
+    400038: StepsDown
+    400040: Wall
+    400042: WallChains
+    400044: WallChains_002
+    400046: WallsDown
+    2300000: Arch1
+    2300002: Arch2
+    2300004: Bars1
+    2300006: Bars2
+    2300008: BrickTrim
+    2300010: BrickTrim2
+    2300012: BrickTrim3
+    2300014: BrickTrim4
+    2300016: BrickTrim5
+    2300018: Circle
+    2300020: FloorTrim
+    2300022: IKFootLeft
+    2300024: IKFootRight
+    2300026: Pillar1
+    2300028: Pillar2
+    2300030: ShadowPlane
+    2300032: StairsDownMask
+    2300034: Steps
+    2300036: StepsDown
+    2300038: Wall
+    2300040: WallChains
+    2300042: WallChains_002
+    2300044: WallsDown
+    3300000: Arch1
+    3300002: Arch2
+    3300004: Bars1
+    3300006: Bars2
+    3300008: BrickTrim
+    3300010: BrickTrim2
+    3300012: BrickTrim3
+    3300014: BrickTrim4
+    3300016: BrickTrim5
+    3300018: Circle
+    3300020: FloorTrim
+    3300022: IKFootLeft
+    3300024: IKFootRight
+    3300026: Pillar1
+    3300028: Pillar2
+    3300030: ShadowPlane
+    3300032: StairsDownMask
+    3300034: Steps
+    3300036: StepsDown
+    3300038: Wall
+    3300040: WallChains
+    3300042: WallChains_002
+    3300044: WallsDown
+    4300000: Circle
+    4300002: StairsDownMask
+    4300004: WallChains_002
+    4300006: WallsDown
+    4300008: FloorTrim
+    4300010: BrickTrim5
+    4300012: StepsDown
+    4300014: IKFootRight
+    4300016: IKFootLeft
+    4300018: ShadowPlane
+    4300020: BrickTrim4
+    4300022: BrickTrim3
+    4300024: BrickTrim2
+    4300026: BrickTrim
+    4300028: Wall
+    4300030: Arch2
+    4300032: Bars2
+    4300034: Bars1
+    4300036: Arch1
+    4300038: Pillar2
+    4300040: Steps
+    4300042: Pillar1
+    4300044: WallChains
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

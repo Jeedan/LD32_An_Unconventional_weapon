@@ -1,0 +1,13 @@
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\Temp\bin\Debug\Assembly-CSharp.dll
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\Temp\bin\Debug\Assembly-CSharp.pdb
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\Temp\bin\Debug\UnityEditor.dll
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\Temp\bin\Debug\UnityEngine.dll
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\Temp\bin\Debug\UnityEngine.UI.dll
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\Temp\bin\Debug\Mono.Cecil.dll
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\Temp\bin\Debug\Unity.SerializationLogic.dll
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\Temp\bin\Debug\Unity.DataContract.dll
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\Temp\bin\Debug\Unity.CecilTools.dll
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\obj\Debug\Assembly-CSharp.dll
+G:\My Documents\Programming\Unity\Projects\LudumDare_32_an_Unconventional_Weapon\obj\Debug\Assembly-CSharp.pdb
