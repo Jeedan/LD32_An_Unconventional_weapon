@@ -66,7 +66,6 @@ public class GameManager : MonoBehaviour
         Camera.main.transform.position = camRespawnPos;
 
         cam.enabled = true;
-        //Camera.main.transform.position = new Vector3(playerSpawnPoint.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z);
         // deactivate base
         UIManager.instance.hideNPCDialogue();
         baseEnvironment.SetActive(true);

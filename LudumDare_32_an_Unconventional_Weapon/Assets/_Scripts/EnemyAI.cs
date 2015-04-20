@@ -10,6 +10,7 @@ public class EnemyAI : MonoBehaviour
     public GameObject target;
 
     public float speed = 5.0f;
+    public float wanderRadius = 10.0f;
     public float ignoreRange = 10.0f;
 
     #region attack values
@@ -20,6 +21,8 @@ public class EnemyAI : MonoBehaviour
     #endregion
 
     public LayerMask playerLayer;
+    public LayerMask wallLayer;
+
     // Use this for initialization
     void Start()
     {
@@ -35,6 +38,51 @@ public class EnemyAI : MonoBehaviour
         {
             MoveToTarget();
         }
+        else
+        {
+            WanderAround();
+        }
+    }
+
+    public float wanderDelay = 1.0f;
+    public float wanderTimer = -1.0f;
+
+    public Vector3 randomPos;
+    Vector3 dirToRandomPoint;
+
+    private void WanderAround()
+    {
+        Ray ray = new Ray(transform.position, transform.forward);
+
+        RaycastHit hitInfo;
+
+        Debug.DrawRay(transform.position, transform.forward * 3.0f, Color.red);
+
+        if (Time.time > wanderDelay + wanderTimer)
+        {
+            // dirToRandomPoint.y = 0.0f;
+
+            randomPos = transform.position + (Random.insideUnitSphere * wanderRadius);
+            dirToRandomPoint = randomPos - transform.position;
+            dirToRandomPoint.y = 0.0f;
+
+            wanderTimer = Time.time;
+
+        }
+        else if (Physics.Raycast(ray, out hitInfo, 2.5f, wallLayer))
+        {
+            if (hitInfo.transform.gameObject != gameObject)
+            {
+                randomPos = transform.position + (Random.insideUnitSphere * wanderRadius);
+
+                dirToRandomPoint = randomPos - transform.position;
+                dirToRandomPoint.y = 0.0f;
+            }
+        }
+
+
+        RotateToTarget(dirToRandomPoint.normalized);
+        Move(dirToRandomPoint.normalized);
     }
 
     private void MoveToTarget()
@@ -42,12 +90,15 @@ public class EnemyAI : MonoBehaviour
         Vector3 direction = target.transform.position - transform.position;
         Vector3 dirNormalized = direction.normalized;
         float distance = direction.magnitude;
-        if (distance > ignoreRange) return;
+        if (distance > ignoreRange)
+        {
+            WanderAround();
+        }
+
         if (distance < ignoreRange && distance > attackRange)
         {
             RotateToTarget(dirNormalized);
-            movement = dirNormalized * speed * Time.deltaTime;
-            rig.MovePosition(transform.position + movement);
+            Move(dirNormalized);
         }
         else if (distance <= attackRange)
         {
@@ -58,6 +109,12 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    private void Move(Vector3 dir)
+    {
+        movement = dir * speed * Time.deltaTime;
+        movement.y = 0.0f;
+        rig.MovePosition(transform.position + movement);
+    }
 
     private void AttackPlayer(Vector3 direction)
     {
@@ -70,7 +127,7 @@ public class EnemyAI : MonoBehaviour
                 if (hitInfo.transform.gameObject == target)
                 {
                     Debug.Log("attacking the player");
-                    // TODO play attack animation
+                    // TODO enemy attack animation
                     playerScript.TakeDamage(damage);
                     attackTimer = Time.time;
                 }
@@ -80,12 +137,23 @@ public class EnemyAI : MonoBehaviour
 
     private void RotateToTarget(Vector3 direction)
     {
-        Quaternion targetLookRotation = Quaternion.LookRotation(direction);
-
-        rig.MoveRotation(targetLookRotation);
+        if (direction != Vector3.zero)
+        {
+            direction.y = 0.0f;
+            Quaternion targetLookRotation = Quaternion.LookRotation(direction);
+            Quaternion rot = Quaternion.RotateTowards(transform.rotation, targetLookRotation, 150.0f * Time.deltaTime);
+            rig.MoveRotation(rot);
+        }
     }
 
     public void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.tag == "Enemy" && collision.gameObject != gameObject)
+        {
+            Vector3 otherPos = collision.gameObject.transform.position;
+
+            Vector3 offSet = otherPos - transform.position;
+            movement += offSet * 100.0f;
+        }
     }
 }

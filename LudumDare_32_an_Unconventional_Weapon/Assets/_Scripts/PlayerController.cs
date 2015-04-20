@@ -12,9 +12,9 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private Vector3 movement;
 
-    private bool attacking = false;
-    private bool canMove = true;
-    private bool canInput = true;
+    public bool attacking = false;
+    public bool canMove = true;
+    public bool canInput = true;
 
     private float strafe;
     private float forward; 
@@ -91,6 +91,10 @@ public class PlayerController : MonoBehaviour
         if (healthScript.isDead())
         {
             uiManager.playDeathAnimation();
+          //  transform.position = new Vector3(-100.0f, 1.0f, 0.0f);
+            attacking = false;
+            canMove = true;
+            canInput = true;
             gameObject.SetActive(false);
             return;
         }
@@ -179,7 +183,20 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && canInput)
         {
             if (!weaponScript.currentWeapon) return;
-            float attackStaminaCost = 10.0f;
+
+            string weaponType = weaponScript.getWeaponType();
+            float attackStaminaCost;
+
+            if (weaponType == "hoover")
+            {
+                attackStaminaCost = 25.0f;
+            }
+            else
+            {
+                attackStaminaCost = 10.0f;
+            }
+
+
             if ((staminaScript.currentResource > 0.0f && staminaScript.currentResource >= attackStaminaCost) && Time.time > attackRate + attackCoolDownTimer)
             {
                 attacking = true;
@@ -187,13 +204,19 @@ public class PlayerController : MonoBehaviour
                 LockInput();
                 StartCoroutine(LockMovement(attackRate));
                 // subtract "stamina" from player
-                staminaScript.currentResource = SubtractResource(staminaScript.currentResource, 10);
+
+                staminaScript.currentResource = SubtractResource(staminaScript.currentResource, attackStaminaCost);
+
                 uiManager.setPlayerStamina(staminaScript.currentResource);
 
                 // deal damage
                 attackCoolDownTimer = Time.time;
             }
         }
+    }
+
+    void Vacuum()
+    {
     }
 
     /// <summary>
@@ -221,7 +244,12 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(hitboxActiveTime);
         FreeInput();
         canMove = true;
-        attacking = false;
+        attacking = false; 
+        string weaponType = weaponScript.getWeaponType();
+        if (weaponType == "hoover")
+        {
+            weaponScript.StopHooving();
+        }
     }
 
     IEnumerator FreeInput(float t)
@@ -232,7 +260,15 @@ public class PlayerController : MonoBehaviour
 
     void AnimateAttack()
     {
-        anim.SetTrigger("Attack");
+        string weaponType = weaponScript.getWeaponType();
+        if (weaponType == "hoover")
+        {
+            weaponScript.ActivateHoovingParticle();
+        }
+        else
+        {
+            anim.SetTrigger("Attack");
+        }
     }
 
     public void StopMoving()
@@ -252,6 +288,10 @@ public class PlayerController : MonoBehaviour
         canInput = true;
     }
 
+    public void FreeMovement()
+    {
+        canInput = true;
+    }
 
     public float SubtractResource(float value, float amount)
     {

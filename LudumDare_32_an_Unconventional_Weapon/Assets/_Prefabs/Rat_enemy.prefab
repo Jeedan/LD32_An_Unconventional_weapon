@@ -2946,6 +2946,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   speed: 5
+  wanderRadius: 5
   ignoreRange: 10
   attackRange: 3.5
   damage: 2
@@ -2953,6 +2954,12 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 1024
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 2560
+  wanderDelay: 2
+  wanderTimer: -1
+  randomPos: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

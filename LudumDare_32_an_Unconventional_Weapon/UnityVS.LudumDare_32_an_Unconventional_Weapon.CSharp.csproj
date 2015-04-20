@@ -56,13 +56,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\PickUpWeapon.cs" />
-    <Compile Include="Assets\_Scripts\DestroyOnTriggerEnter.cs" />
+    <Compile Include="Assets\_Scripts\DisableOnTriggerEnter.cs" />
     <Compile Include="Assets\_Scripts\DisplayTextOnTriggerEnter.cs" />
     <Compile Include="Assets\_Scripts\EnemyAI.cs" />
     <Compile Include="Assets\_Scripts\EnemyHealth.cs" />
     <Compile Include="Assets\_Scripts\EnterDungeonOnTriggerEnter.cs" />
     <Compile Include="Assets\_Scripts\GameManager.cs" />
+    <Compile Include="Assets\_Scripts\MeleeSwipe.cs" />
+    <Compile Include="Assets\_Scripts\PickUpWeapon.cs" />
     <Compile Include="Assets\_Scripts\PlayerController.cs" />
     <Compile Include="Assets\_Scripts\PlayerWeapon.cs" />
     <Compile Include="Assets\_Scripts\Resource.cs" />

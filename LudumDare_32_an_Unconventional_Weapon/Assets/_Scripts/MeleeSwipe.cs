@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DestroyOnTriggerEnter : MonoBehaviour
+public class MeleeSwipe : MonoBehaviour
 {
     public string[] killTags;
     public BoxCollider hitBox;

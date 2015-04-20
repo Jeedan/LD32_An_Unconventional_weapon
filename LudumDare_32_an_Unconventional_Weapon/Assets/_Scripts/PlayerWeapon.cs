@@ -7,19 +7,27 @@ public class PlayerWeapon : MonoBehaviour
     public GameObject[] Weapons;
 
     private int currentIndex = 0;
+    private int previousIndex = 0;
 
     public GameObject currentWeapon;
+    public GameObject weaponSlot;
+    public MeleeSwipe[] hitBoxScripts;
 
-    public DestroyOnTriggerEnter[] hitBoxScripts;
+    public string weaponType = "weapon";
+
+    private PickUpWeapon pickUpScript;
+
     // Use this for initialization
     void Start()
     {
-        hitBoxScripts = new DestroyOnTriggerEnter[Weapons.Length];
+
+        weaponSlot = GameObject.FindGameObjectWithTag("Player").transform.FindChild("_PlayerModel").transform.FindChild("arm.R").transform.FindChild("weapon_slot").gameObject;
+        hitBoxScripts = new MeleeSwipe[Weapons.Length];
         for (int i = 0; i < Weapons.Length; i++)
         {
             if (Weapons[i] != null)
             {
-                hitBoxScripts[i] = Weapons[i].GetComponentInChildren<DestroyOnTriggerEnter>();
+                hitBoxScripts[i] = Weapons[i].GetComponentInChildren<MeleeSwipe>();
             }
         }
 
@@ -41,7 +49,7 @@ public class PlayerWeapon : MonoBehaviour
     {
         // update our hitboxes
 
-        hitBoxScripts[index] = Weapons[index].GetComponentInChildren<DestroyOnTriggerEnter>();
+        hitBoxScripts[index] = Weapons[index].GetComponentInChildren<MeleeSwipe>();
 
         // hide all other guns
         if (index != 0)
@@ -55,6 +63,7 @@ public class PlayerWeapon : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Alpha1))
         {
+            previousIndex = currentIndex;
             currentIndex = 0;
             SwapWeapon(currentIndex);
             Debug.Log("currentWeapon: " + currentIndex);
@@ -63,6 +72,8 @@ public class PlayerWeapon : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Alpha2))
         {
+            previousIndex = currentIndex;
+
             currentIndex = 1;
 
             SwapWeapon(currentIndex);
@@ -72,6 +83,8 @@ public class PlayerWeapon : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Alpha3))
         {
+            previousIndex = currentIndex;
+
             currentIndex = 2;
 
             SwapWeapon(currentIndex);
@@ -82,6 +95,8 @@ public class PlayerWeapon : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Alpha4))
         {
+            previousIndex = currentIndex;
+
             currentIndex = 3;
             SwapWeapon(currentIndex);
             Debug.Log("currentWeapon: " + currentIndex);
@@ -96,9 +111,41 @@ public class PlayerWeapon : MonoBehaviour
 
     void SwapWeapon(int index)
     {
-        currentWeapon.SetActive(false);
-        currentWeapon = Weapons[index];
-        currentWeapon.SetActive(true);
+
+        if (Weapons[index] != null)
+        {
+            currentWeapon.SetActive(false);
+            currentWeapon = Weapons[index];
+            pickUpScript = currentWeapon.GetComponent<PickUpWeapon>();
+            weaponType = pickUpScript.weaponType;
+            positionAndRotateWeapon(weaponType);
+            currentWeapon.SetActive(true);
+        }
+        else
+        {
+            currentIndex = previousIndex;
+        }
+    }
+
+    public void positionAndRotateWeapon(string type)
+    {
+        Quaternion pickupRot;
+
+        if (weaponType == "hoover")
+        {
+            pickupRot = Quaternion.Euler(0.0f, 90.0f, 357);
+
+
+        }
+        else
+        {
+            pickupRot = Quaternion.Euler(0.0f, 90.0f, 90.0f);
+
+        }
+
+        weaponSlot.transform.localRotation = pickupRot;
+        currentWeapon.transform.position = weaponSlot.transform.position;
+        currentWeapon.transform.rotation = weaponSlot.transform.rotation;
     }
 
     public void pickUpAndEquipWeapon(GameObject weap)
@@ -108,14 +155,16 @@ public class PlayerWeapon : MonoBehaviour
             currentIndex = 0;
             Weapons[currentIndex] = weap;
             currentWeapon = weap;
+            currentWeapon.SetActive(true);
             updateHitbox(currentIndex);
         }
         else
         {
-            currentIndex++;
-            if (currentIndex < Weapons.Length )
+            ++currentIndex;
+            if (currentIndex < Weapons.Length)
             {
                 Weapons[currentIndex] = weap;
+
                 updateHitbox(currentIndex);
             }
             else
@@ -128,9 +177,35 @@ public class PlayerWeapon : MonoBehaviour
         //currentWeapon.SetActive(true);
     }
 
+    public void ActivateHoovingParticle()
+    {
+        ParticleSystem partic = currentWeapon.GetComponentInChildren<ParticleSystem>();
+        if (partic != null)
+        {
+            partic.Play();
+        }
+    }
+
+    public void StopHooving()
+    {
+        ParticleSystem partic = currentWeapon.GetComponentInChildren<ParticleSystem>();
+        if (partic != null)
+        {
+            partic.Stop();
+        }
+    }
+
+    public string getWeaponType()
+    {
+        pickUpScript = currentWeapon.GetComponent<PickUpWeapon>();
+        weaponType = pickUpScript.weaponType;
+
+        return weaponType;
+    }
+
     public void toggleWeaponHitbox(bool value)
     {
-        if (hitBoxScripts[currentIndex] != null)
+        if(hitBoxScripts[currentIndex]!= null)
             hitBoxScripts[currentIndex].toggleHitBox(value);
     }
 
