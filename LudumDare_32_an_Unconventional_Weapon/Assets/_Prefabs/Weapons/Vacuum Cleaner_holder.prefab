@@ -77,8 +77,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 455500}
   - 33: {fileID: 3335842}
-  - 65: {fileID: 6559550}
   - 23: {fileID: 2303906}
+  - 65: {fileID: 6504758}
   - 114: {fileID: 11438996}
   m_Layer: 0
   m_Name: Front
@@ -97,7 +97,6 @@ GameObject:
   - 4: {fileID: 495286}
   - 135: {fileID: 13504956}
   - 114: {fileID: 11469076}
-  - 114: {fileID: 11404574}
   m_Layer: 0
   m_Name: Vacuum Cleaner_holder
   m_TagString: Untagged
@@ -234,7 +233,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 181916}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.30999994, y: .779999971, z: 2}
+  m_LocalPosition: {x: 99.9499969, y: .630999982, z: 19.1410007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 433066}
@@ -397,7 +396,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 120274}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &6559550
+--- !u!65 &6504758
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -407,19 +406,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 5, z: 3}
-  m_Center: {x: -4.5, y: 1.5, z: 0}
---- !u!114 &11404574
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 181916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71b083ea7ac515344a9ae4dc909c297b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Size: {x: 17.8099995, y: 10, z: 7.82999992}
+  m_Center: {x: -12, y: 7, z: 0}
 --- !u!114 &11414126
 MonoBehaviour:
   m_ObjectHideFlags: 1

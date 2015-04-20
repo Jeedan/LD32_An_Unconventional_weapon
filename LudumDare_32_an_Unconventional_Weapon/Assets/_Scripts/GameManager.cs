@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
-        DontDestroyOnLoad(gameObject);
+     //   DontDestroyOnLoad(gameObject);
     }
     #endregion
 
@@ -42,18 +42,6 @@ public class GameManager : MonoBehaviour
         // TODO save score in playerprefs
     }
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //TODO respawn button resets scene
-    }
-
     public void Reset()
     {
         UIManager.instance.playAliveAnimation();
@@ -62,6 +50,7 @@ public class GameManager : MonoBehaviour
         playerScript.ResetValues();
         player.SetActive(true);
         player.transform.position = playerSpawnPoint.position;
+        
         Vector3 camRespawnPos = Camera.main.transform.position - player.transform.position;
         Camera.main.transform.position = camRespawnPos;
 
@@ -69,5 +58,10 @@ public class GameManager : MonoBehaviour
         // deactivate base
         UIManager.instance.hideNPCDialogue();
         baseEnvironment.SetActive(true);
+    }
+
+    public void QuitGame()
+    {
+        Application.LoadLevel("main_menu");
     }
 }

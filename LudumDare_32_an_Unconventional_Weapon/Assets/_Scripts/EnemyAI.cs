@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+
+[RequireComponent(typeof(Rigidbody))]
+
 [RequireComponent(typeof(EnemyHealth))]
 public class EnemyAI : MonoBehaviour
 {
@@ -28,7 +31,8 @@ public class EnemyAI : MonoBehaviour
     {
         rig = GetComponent<Rigidbody>();
         target = GameObject.FindGameObjectWithTag("Player");
-        playerScript = target.GetComponent<PlayerController>();
+        if (target)
+            playerScript = target.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -116,21 +120,36 @@ public class EnemyAI : MonoBehaviour
         rig.MovePosition(transform.position + movement);
     }
 
+    public bool melee = true;
+    public Rigidbody webPrefab;
+
     private void AttackPlayer(Vector3 direction)
     {
         if (Time.time > attackRate + attackTimer)
         {
-            Ray ray = new Ray(transform.position, direction);
-            RaycastHit hitInfo;
-            if (Physics.Raycast(ray, out hitInfo, 5, playerLayer))
+
+            if (melee)
             {
-                if (hitInfo.transform.gameObject == target)
+                Ray ray = new Ray(transform.position, direction);
+                RaycastHit hitInfo;
+                if (Physics.Raycast(ray, out hitInfo, 5, playerLayer))
                 {
-                    Debug.Log("attacking the player");
-                    // TODO enemy attack animation
-                    playerScript.TakeDamage(damage);
-                    attackTimer = Time.time;
+                    if (hitInfo.transform.gameObject == target)
+                    {
+                        // TODO enemy attack animation
+                        playerScript.TakeDamage(damage);
+                        attackTimer = Time.time;
+                    }
                 }
+            }
+            else
+            {
+                // instantiate bullet
+                Rigidbody web = Instantiate(webPrefab, transform.position + transform.forward, transform.rotation) as Rigidbody;
+                web.GetComponent<Projectile>().damage = damage;
+                attackTimer = Time.time;
+                attackTimer += Random.Range(1, 5);
+
             }
         }
     }

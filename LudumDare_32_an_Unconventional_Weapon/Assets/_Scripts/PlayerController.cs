@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
@@ -39,9 +41,43 @@ public class PlayerController : MonoBehaviour
     private float regenTimer = -2.0f;
     #endregion
 
+    public Image damageImage; 
+    public float flashSpeed = 5.0f;                               // The speed the damageImage will fade at.
+    public Color flashColour = new Color(1f, 0f, 0f, 0.1f);     // The colour the damageImage is set to, to flash.
+    public bool damaged;
+
+    private float initialDamage;
+    public Color prev;
+    public Material playerMat;
+    public void FlashOnDamage()
+    {
+        if (damaged)
+        {
+            playerMat.color = flashColour;
+            //damageImage.color = flashColour;
+        }
+        else
+        {
+            playerMat.color = Color.Lerp(playerMat.color, prev, flashSpeed * Time.deltaTime);
+            //damageImage.color = Color.Lerp(damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
+        }
+    }
+
+    public void FlashInitialize()
+    {
+        // color flashing
+        playerMat = GetComponentInChildren<Renderer>().material;
+        prev = playerMat.color;
+    }
+
     // Use this for initialization
     void Start()
     {
+        // color flashing
+        playerMat = GetComponentInChildren<Renderer>().material;
+        prev = playerMat.color;
+        initialDamage = damage;
+
         anim = transform.FindChild("_PlayerModel").GetComponent<Animator>();
         rig = GetComponent<Rigidbody>();
 
@@ -52,6 +88,7 @@ public class PlayerController : MonoBehaviour
 
         // HUD related stuff
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        uiManager.setPlayerMaxHealth(healthScript.MaxResource);
         uiManager.setPlayerHealth(healthScript.currentResource);
         uiManager.setPlayerStamina(staminaScript.currentResource);
     }
@@ -62,6 +99,10 @@ public class PlayerController : MonoBehaviour
         staminaScript.currentResource = healthScript.MaxResource;
         uiManager.setPlayerHealth(healthScript.currentResource);
         uiManager.setPlayerStamina(staminaScript.currentResource);
+
+        attacking = false;
+        canMove = true;
+        canInput = true;
     }
 
     void Update()
@@ -72,6 +113,10 @@ public class PlayerController : MonoBehaviour
             forward = Input.GetAxisRaw("Vertical"); // forward movement
         }
         Attack();
+
+        FlashOnDamage();
+        damaged = false;
+    
     }
 
     void FixedUpdate()
@@ -92,9 +137,9 @@ public class PlayerController : MonoBehaviour
         {
             uiManager.playDeathAnimation();
           //  transform.position = new Vector3(-100.0f, 1.0f, 0.0f);
-            attacking = false;
-            canMove = true;
-            canInput = true;
+            damaged = false;
+            canMove = false;
+            canInput = false;
             gameObject.SetActive(false);
             return;
         }
@@ -102,10 +147,12 @@ public class PlayerController : MonoBehaviour
         {
             uiManager.playAliveAnimation();
         }
+
     }
 
     public void TakeDamage(float amount)
     {
+        damaged = true;
         healthScript.currentResource = healthScript.SubtractResource(healthScript.currentResource, amount);
 
         uiManager.setPlayerHealth(healthScript.currentResource);
@@ -183,17 +230,19 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && canInput)
         {
             if (!weaponScript.currentWeapon) return;
-
-            string weaponType = weaponScript.getWeaponType();
             float attackStaminaCost;
 
+            string weaponType = weaponScript.getWeaponType();
+            
             if (weaponType == "hoover")
             {
                 attackStaminaCost = 25.0f;
+                damage *= 2;
             }
             else
             {
                 attackStaminaCost = 10.0f;
+                damage = initialDamage;
             }
 
 
@@ -201,7 +250,6 @@ public class PlayerController : MonoBehaviour
             {
                 attacking = true;
                 StopMoving();
-                LockInput();
                 StartCoroutine(LockMovement(attackRate));
                 // subtract "stamina" from player
 
@@ -213,10 +261,6 @@ public class PlayerController : MonoBehaviour
                 attackCoolDownTimer = Time.time;
             }
         }
-    }
-
-    void Vacuum()
-    {
     }
 
     /// <summary>
@@ -231,9 +275,25 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     IEnumerator LockMovement(float t)
     {
-        float animDelay = t * 0.6f;
-        float hitboxActiveTime = t * 0.2f;
-        canMove = false;
+        float animDelay;
+        float hitboxActiveTime ;
+        string weaponType = weaponScript.getWeaponType();
+
+        if (weaponType == "hoover")
+        {
+            animDelay = t * 0.3f;
+            hitboxActiveTime = t * 0.4f;
+            canMove = true;
+
+        }
+        else
+        {
+            animDelay = t * 0.6f;
+            hitboxActiveTime = t * 0.2f;
+            canMove = false;
+            LockInput();
+        }
+
         // animate the attack
         AnimateAttack();
         yield return new WaitForSeconds(animDelay);
@@ -245,7 +305,6 @@ public class PlayerController : MonoBehaviour
         FreeInput();
         canMove = true;
         attacking = false; 
-        string weaponType = weaponScript.getWeaponType();
         if (weaponType == "hoover")
         {
             weaponScript.StopHooving();
@@ -304,26 +363,4 @@ public class PlayerController : MonoBehaviour
 
         return (result);
     }
-
-    //    public void KnockBack(Vector3 direction)
-    //    {
-    //        Vector3 startPos = transform.position;
-    //        Vector3 endPos;
-
-    //        LockInput();
-    //        StopMoving();
-    //        // movement = new Vector3(inputX, 0.0f, inputZ );
-    //        movement = direction.normalized;
-
-    //        float speedZ = 500.0f * Time.deltaTime;
-
-    //        movement.z *= speedZ;
-
-    //        endPos = transform.position + movement;
-    //        rig.MovePosition(transform.position + movement);
-
-    ////        rig.MovePosition(Vector3.Lerp(startPos, endPos, Vector3.Distance(transform.position, movement) / movement.magnitude));
-    //        StartCoroutine(FreeInput(0.2f));
-
-    //    }
 }

@@ -6,8 +6,15 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance = null;
 
+    public Slider healthBarSlider;
+    public Slider staminaBarSlider;
+    
     public Text playerHealthText;
     public Text playerStaminaText;
+    public Text playerCleanScoreText;
+    public Text playerKillsText;
+    public Text wavesText;
+    public Text newWaveText;
 
     #region Dialog
     public GameObject DialogBox;
@@ -34,20 +41,48 @@ public class UIManager : MonoBehaviour
         {
             instance = this;
         }
-        DontDestroyOnLoad(gameObject);
+       // DontDestroyOnLoad(gameObject);
+
+        healthBarSlider = GameObject.Find("HealthBar").GetComponent<Slider>();
+        staminaBarSlider = GameObject.Find("StaminaBar").GetComponent<Slider>();
+        playerHealthText = GameObject.Find("Health").GetComponent<Text>();
+        playerStaminaText = GameObject.Find("Stamina").GetComponent<Text>();
+        playerCleanScoreText = GameObject.Find("CleaningScore").GetComponent<Text>();
+        playerKillsText = GameObject.Find("Kills").GetComponent<Text>();
+        wavesText = GameObject.Find("Waves").GetComponent<Text>();
+        newWaveText = GameObject.Find("NewWaveDisplay").GetComponent<Text>();
+        newWaveText.gameObject.SetActive(false);
+
+
+        DialogBox = GameObject.Find("ConversationPanel");
+        npcConvoText = GameObject.Find("NPC_TEXT").GetComponent<Text>();
+
+        DeathDisplay = GameObject.Find("DeathDisplay");
+        deathAnimator = DeathDisplay.GetComponent<Animator>();
     }
 
     // Use this for initialization
     void Start()
     {
-        deathAnimator = DeathDisplay.GetComponent<Animator>();
+        playerCleanScoreText.text = "Cleaning score: 0";
+
+        DialogBox.gameObject.SetActive(false);
+        playerStaminaText.gameObject.SetActive(false);
+        playerHealthText.gameObject.SetActive(false);
+       
     }
 
-    // Update is called once per frame
-    void Update()
+    public void showNewWaveText(bool value)
     {
-
+        newWaveText.gameObject.SetActive(value);
     }
+
+    public void setNewWaveMessage(string message)
+    {
+        string msg = message;
+        newWaveText.text = msg;
+    }
+
 
     public void playDeathAnimation()
     {
@@ -59,9 +94,20 @@ public class UIManager : MonoBehaviour
         deathAnimator.SetBool("Alive", true);
     }
 
+    public void setPlayerMaxHealth(float hp)
+    {
+        healthBarSlider.maxValue = hp;
+    }
+    
+    public void setPlayerMaxStamina(float hp)
+    {
+        staminaBarSlider.maxValue = hp;
+    }
+
     public void setPlayerHealth(float hp)
     {
         string playerHealth = "Health: " + hp.ToString("0");
+        healthBarSlider.value = hp;
         playerHealthText.text = playerHealth;
     }
 
@@ -69,6 +115,19 @@ public class UIManager : MonoBehaviour
     {
         string playerStamina = "Stamina: " + stamina.ToString("0");
         playerStaminaText.text = playerStamina;
+        staminaBarSlider.value = stamina;
+    }
+
+    public void setPlayerKills(float kills)
+    {
+        string playerKills = "Cleaning score: " + kills.ToString("0");
+        playerCleanScoreText.text = playerKills;
+    }
+
+    public void setKills(float kills)
+    {
+        string playerKills =  kills.ToString("0") +" :Kills";
+        playerKillsText.text = playerKills;
     }
 
     public void displayNPCDialogue()
@@ -140,6 +199,4 @@ public class UIManager : MonoBehaviour
         npcTrigger.SetActive(true);
         hideNPCDialogue();
     }
-
-
 }

@@ -52,7 +52,7 @@ public class PlayerWeapon : MonoBehaviour
         hitBoxScripts[index] = Weapons[index].GetComponentInChildren<MeleeSwipe>();
 
         // hide all other guns
-        if (index != 0)
+        if (index > 0)
         {
             Weapons[index].SetActive(false);
         }
@@ -161,16 +161,20 @@ public class PlayerWeapon : MonoBehaviour
         else
         {
             ++currentIndex;
-            if (currentIndex < Weapons.Length)
-            {
-                Weapons[currentIndex] = weap;
 
-                updateHitbox(currentIndex);
-            }
-            else
+            if (currentIndex > 0)
             {
-                fullSlots = true;
-            }
+                if (currentIndex < Weapons.Length)
+                {
+                    Weapons[currentIndex] = weap;
+
+                    updateHitbox(currentIndex);
+                }
+                else
+                {
+                    fullSlots = true;
+                }
+            }            
         }
         //currentIndex = 0;
         //currentWeapon = Weapons[currentIndex];

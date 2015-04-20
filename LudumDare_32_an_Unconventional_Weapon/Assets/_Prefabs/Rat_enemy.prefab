@@ -2933,6 +2933,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthScript:
     currentResource: 6
+  healthGlobePrefab: {fileID: 180372, guid: 7434a2544243fc041b8a6e1598d39b17, type: 2}
+  canFlash: 1
+  flashSpeed: 7
+  flashColour: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &11438312
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2949,7 +2953,7 @@ MonoBehaviour:
   wanderRadius: 5
   ignoreRange: 10
   attackRange: 3.5
-  damage: 2
+  damage: 1
   attackRate: 1.20000005
   playerLayer:
     serializedVersion: 2
@@ -2957,9 +2961,11 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 2560
-  wanderDelay: 2
-  wanderTimer: -1
+  wanderDelay: 4
+  wanderTimer: -2
   randomPos: {x: 0, y: 0, z: 0}
+  melee: 1
+  webPrefab: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
